@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>EMI Calculator — Druk PNB Bank</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+/* ============================================================
+   DRUK PNB BANK — EMI CALCULATOR PAGE
+   Inherits design language from style.css
+   ============================================================ */
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --maroon:       #7A1515;
+  --maroon-dark:  #5A0E0E;
+  --maroon-mid:   #8E1C1C;
+  --maroon-light: #A62020;
+  --saffron:      #E8720C;
+  --saffron-light:#F4921E;
+  --saffron-pale: #FEF3E8;
+  --saffron-muted: rgba(232,114,12,0.14);
+  --dragon-gold:  #C8921A;
+  --cream:        #FBF8F4;
+  --white:        #FFFFFF;
+  --n100: #F5F2EF;
+  --n200: #EAE4DF;
+  --n300: #C9BFB8;
+  --n500: #8C7B72;
+  --n700: #4A3C36;
+  --n900: #1E1210;
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body:    'Outfit', system-ui, sans-serif;
+  --r-sm:  6px;
+  --r-md:  14px;
+  --r-lg:  24px;
+  --sh-sm: 0 2px 8px rgba(90,14,14,0.08);
+  --sh-md: 0 8px 30px rgba(90,14,14,0.14);
+  --sh-lg: 0 24px 64px rgba(90,14,14,0.22);
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --tx:   all 0.28s var(--ease);
+}
+
+html { scroll-behavior: smooth; font-size: 16px; }
+body { font-family: var(--font-body); color: var(--n900); background: var(--cream); overflow-x: hidden; line-height: 1.6; }
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+button { cursor: pointer; border: none; background: none; font-family: var(--font-body); }
+.container { max-width: 1240px; margin: 0 auto; padding: 0 28px; }
+
+/* ── TICKER ── */
+.ticker-bar {
+  background: var(--maroon-dark); color: var(--white);
+  display: flex; align-items: center; height: 38px;
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1002;
+  padding: 0 16px 0 0; overflow: hidden;
+}
+.ticker-inner { display: flex; align-items: center; flex: 1; overflow: hidden; height: 100%; }
+.ticker-label {
+  flex-shrink: 0; background: var(--saffron); color: var(--white);
+  padding: 0 18px; height: 100%; display: flex; align-items: center; gap: 7px;
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; margin-right: 20px;
+}
+.ticker-track { flex: 1; overflow: hidden; }
+.ticker-content {
+  display: inline-flex; white-space: nowrap; font-size: 0.8rem;
+  animation: tickerScroll 30s linear infinite; color: rgba(255,255,255,0.8);
+}
+.ticker-content span { padding: 0 28px; border-right: 1px solid rgba(255,255,255,0.15); }
+@keyframes tickerScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* ── NAVBAR ── */
+.navbar {
+  position: fixed; top: 38px; left: 0; right: 0;
+  background: rgba(255,255,255,0.97); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--n200); z-index: 1000;
+  transition: var(--tx);
+}
+.navbar.scrolled { box-shadow: var(--sh-md); }
+.nav-container {
+  max-width: 1240px; margin: 0 auto; padding: 0 28px;
+  display: flex; align-items: center; gap: 20px; height: 68px;
+}
+.logo { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.logo-emblem { width: 44px; height: 44px; background: linear-gradient(135deg, var(--maroon-dark), var(--maroon)); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; color: var(--saffron-light); }
+.logo-name { font-family: var(--font-display); font-weight: 700; font-size: 1.2rem; color: var(--maroon-dark); line-height: 1; }
+.logo-tag { font-size: 0.6rem; color: var(--n500); font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; }
+.nav-back {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 0.84rem; font-weight: 500; color: var(--n700);
+  padding: 8px 14px; border-radius: var(--r-sm); transition: var(--tx);
+  border: 1px solid var(--n200); margin-left: 20px;
+}
+.nav-back:hover { background: var(--n100); color: var(--maroon-dark); border-color: var(--n300); }
+.nav-actions { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+.btn-ibanking {
+  display: flex; align-items: center; gap: 7px; padding: 9px 16px;
+  border: 1.5px solid var(--maroon); color: var(--maroon);
+  border-radius: var(--r-sm); font-size: 0.84rem; font-weight: 600; transition: var(--tx);
+}
+.btn-ibanking:hover { background: var(--maroon); color: var(--white); }
+.btn-account {
+  padding: 9px 18px; background: linear-gradient(135deg, var(--saffron), var(--saffron-light));
+  color: var(--white); border-radius: var(--r-sm); font-size: 0.84rem; font-weight: 700;
+  transition: var(--tx); box-shadow: 0 3px 12px rgba(232,114,12,0.35);
+}
+.btn-account:hover { transform: translateY(-2px); }
+
+body { padding-top: 106px; }
+
+/* ── PAGE HERO ── */
+.page-hero {
+  background: linear-gradient(140deg, var(--maroon-dark) 0%, var(--maroon) 60%, var(--maroon-light) 100%);
+  padding: 56px 0 72px; position: relative; overflow: hidden;
+}
+.page-hero::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse 700px 500px at 80% 50%, rgba(232,114,12,0.10), transparent 65%);
+}
+.page-hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 60px;
+  background: var(--cream); border-radius: 60px 60px 0 0;
+}
+.hero-inner { position: relative; z-index: 2; }
+.breadcrumb { display: flex; align-items: center; gap: 8px; font-size: 0.78rem; color: rgba(255,255,255,0.45); margin-bottom: 20px; }
+.breadcrumb a { color: rgba(255,255,255,0.55); transition: var(--tx); }
+.breadcrumb a:hover { color: var(--saffron-light); }
+.breadcrumb i { font-size: 0.6rem; }
+.page-hero h1 { font-family: var(--font-display); font-size: clamp(2.2rem, 4vw, 3.4rem); font-weight: 700; color: var(--white); line-height: 1.1; margin-bottom: 12px; }
+.page-hero h1 em { font-style: italic; background: linear-gradient(90deg, var(--saffron), var(--saffron-light)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.page-hero p { color: rgba(255,255,255,0.62); font-size: 1rem; max-width: 480px; line-height: 1.7; }
+.hero-badges { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px; }
+.hbadge { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.14); border-radius: 40px; font-size: 0.75rem; color: rgba(255,255,255,0.72); }
+.hbadge i { color: var(--saffron-light); font-size: 0.7rem; }
+
+/* ── LOAN TYPE TABS ── */
+.loan-nav { padding: 28px 0 0; position: sticky; top: 106px; z-index: 50; background: var(--cream); border-bottom: 1px solid var(--n200); }
+.loan-nav-inner { display: flex; align-items: center; gap: 4px; overflow-x: auto; padding-bottom: 0; }
+.loan-nav-inner::-webkit-scrollbar { display: none; }
+.ltab {
+  display: flex; align-items: center; gap: 8px; padding: 12px 20px;
+  font-size: 0.85rem; font-weight: 600; color: var(--n500); white-space: nowrap;
+  border-radius: var(--r-sm) var(--r-sm) 0 0; transition: var(--tx);
+  border-bottom: 3px solid transparent; cursor: pointer; background: none; border-top: none; border-left: none; border-right: none;
+}
+.ltab i { font-size: 0.9rem; }
+.ltab:hover { color: var(--n700); background: var(--n100); }
+.ltab.active { color: var(--maroon-dark); border-bottom-color: var(--saffron); background: var(--white); }
+.ltab .rate-chip { font-size: 0.65rem; background: var(--saffron-pale); color: var(--saffron); padding: 2px 7px; border-radius: 20px; font-weight: 700; }
+
+/* ── MAIN LAYOUT ── */
+.emi-section { padding: 48px 0 80px; }
+.emi-grid { display: grid; grid-template-columns: 1fr 1.1fr; gap: 32px; align-items: start; }
+
+/* ── CALCULATOR CARD ── */
+.calc-panel {
+  background: var(--white); border-radius: var(--r-lg); border: 1px solid var(--n200);
+  box-shadow: var(--sh-sm); overflow: hidden; position: sticky; top: 180px;
+}
+.calc-panel-head {
+  background: linear-gradient(135deg, var(--maroon-dark), var(--maroon));
+  padding: 24px 28px; display: flex; align-items: center; justify-content: space-between;
+}
+.calc-panel-head h3 { font-family: var(--font-display); font-size: 1.3rem; color: var(--white); font-weight: 700; }
+.interest-method-toggle { display: flex; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.14); border-radius: 6px; overflow: hidden; }
+.imtab { padding: 6px 14px; font-size: 0.74rem; font-weight: 600; color: rgba(255,255,255,0.55); cursor: pointer; transition: var(--tx); }
+.imtab.active { background: var(--saffron); color: var(--white); }
+
+.calc-body { padding: 28px; }
+
+/* sliders */
+.cfield { margin-bottom: 28px; }
+.cfield-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.cfield-head label { font-size: 0.84rem; font-weight: 600; color: var(--n700); display: flex; align-items: center; gap: 6px; }
+.cfield-head label i { color: var(--n300); font-size: 0.72rem; }
+.cval-wrap { display: flex; align-items: center; gap: 6px; }
+.cval { font-size: 0.88rem; font-weight: 700; color: var(--maroon-dark); background: var(--saffron-pale); padding: 4px 12px; border-radius: 20px; min-width: 90px; text-align: center; cursor: pointer; transition: var(--tx); border: 1.5px solid transparent; }
+.cval:focus { outline: none; border-color: var(--saffron); box-shadow: 0 0 0 3px rgba(232,114,12,0.12); background: var(--white); }
+.cslider { width: 100%; -webkit-appearance: none; appearance: none; height: 5px; background: var(--n200); border-radius: 3px; outline: none; cursor: pointer; }
+.cslider::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; background: linear-gradient(135deg, var(--saffron), var(--saffron-light)); border-radius: 50%; border: 3px solid var(--white); box-shadow: 0 2px 10px rgba(232,114,12,0.55); cursor: pointer; transition: transform 0.15s; }
+.cslider::-webkit-slider-thumb:hover { transform: scale(1.2); }
+.crange-labels { display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--n300); margin-top: 5px; }
+
+/* method note */
+.method-banner { display: flex; align-items: flex-start; gap: 10px; padding: 12px 16px; border-radius: var(--r-sm); font-size: 0.82rem; line-height: 1.6; margin-bottom: 24px; }
+.method-banner.reducing { background: #e1f5ee; color: #085041; border: 1px solid #9FE1CB; }
+.method-banner.flat { background: #faeeda; color: #633806; border: 1px solid #FAC775; }
+.method-banner i { margin-top: 2px; flex-shrink: 0; }
+
+/* results */
+.emi-result-box {
+  background: linear-gradient(135deg, var(--maroon-dark) 0%, var(--maroon) 100%);
+  border-radius: var(--r-md); padding: 22px 24px; margin-bottom: 16px; position: relative; overflow: hidden;
+}
+.emi-result-box::before { content: ''; position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; border-radius: 50%; background: radial-gradient(circle, rgba(232,114,12,0.14), transparent 65%); pointer-events: none; }
+.emi-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.5); margin-bottom: 4px; }
+.emi-amount { font-family: var(--font-display); font-size: 2.8rem; font-weight: 700; color: var(--saffron-light); line-height: 1; margin-bottom: 4px; }
+.emi-sub { font-size: 0.74rem; color: rgba(255,255,255,0.42); }
+.emi-period-note { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.08); border-radius: 20px; padding: 5px 12px; font-size: 0.72rem; color: rgba(255,255,255,0.65); margin-top: 10px; }
+
+.result-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+.rbox { background: var(--cream); border: 1px solid var(--n200); border-radius: var(--r-sm); padding: 14px; text-align: center; }
+.rbox span { display: block; font-size: 0.65rem; color: var(--n500); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 5px; }
+.rbox strong { font-size: 0.88rem; font-weight: 700; color: var(--maroon-dark); }
+.rbox.highlight { background: var(--saffron-pale); border-color: rgba(232,114,12,0.3); }
+.rbox.highlight strong { color: var(--saffron); }
+
+/* donut chart */
+.donut-wrap { display: flex; align-items: center; gap: 20px; background: var(--cream); border-radius: var(--r-md); padding: 18px 20px; border: 1px solid var(--n200); margin-bottom: 14px; }
+.donut-svg { flex-shrink: 0; }
+.donut-legend { flex: 1; }
+.dl-item { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: var(--n700); margin-bottom: 8px; }
+.dl-item:last-child { margin-bottom: 0; }
+.dl-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+.dl-dot.principal { background: var(--maroon-dark); }
+.dl-dot.interest { background: var(--saffron); }
+.dl-dot.gst { background: var(--dragon-gold); }
+.dl-val { margin-left: auto; font-weight: 700; color: var(--n900); }
+
+/* compare btn */
+.cta-primary {
+  display: inline-flex; align-items: center; gap: 10px; padding: 14px 28px;
+  background: linear-gradient(135deg, var(--saffron), var(--saffron-light));
+  color: var(--white); border-radius: var(--r-sm); font-weight: 700; font-size: 0.92rem;
+  transition: var(--tx); box-shadow: 0 4px 20px rgba(232,114,12,0.4); border: none; cursor: pointer; width: 100%; justify-content: center;
+}
+.cta-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(232,114,12,0.5); }
+.cta-outline {
+  display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px;
+  border: 1.5px solid var(--maroon); color: var(--maroon);
+  border-radius: var(--r-sm); font-weight: 600; font-size: 0.88rem;
+  transition: var(--tx); background: transparent; cursor: pointer; width: 100%; justify-content: center; margin-top: 10px;
+}
+.cta-outline:hover { background: var(--maroon); color: var(--white); }
+
+/* ── RIGHT PANEL ── */
+.results-panel { display: flex; flex-direction: column; gap: 24px; }
+
+/* amortization */
+.amort-card { background: var(--white); border-radius: var(--r-lg); border: 1px solid var(--n200); box-shadow: var(--sh-sm); overflow: hidden; }
+.amort-head { padding: 20px 24px; border-bottom: 1px solid var(--n200); display: flex; align-items: center; justify-content: space-between; }
+.amort-head h4 { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: var(--maroon-dark); }
+.view-tabs { display: flex; background: var(--n100); border-radius: 6px; padding: 3px; gap: 2px; }
+.vtab { padding: 6px 14px; font-size: 0.76rem; font-weight: 600; color: var(--n500); border-radius: 4px; cursor: pointer; transition: var(--tx); }
+.vtab.active { background: var(--white); color: var(--n900); box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+/* chart bars */
+.bar-chart-wrap { padding: 20px 24px; }
+.bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.bar-yr { font-size: 0.72rem; font-weight: 600; color: var(--n500); width: 38px; flex-shrink: 0; text-align: right; }
+.bar-track { flex: 1; height: 20px; background: var(--n100); border-radius: 4px; overflow: hidden; position: relative; display: flex; }
+.bar-principal { height: 100%; background: var(--maroon-dark); border-radius: 4px 0 0 4px; transition: width 0.6s var(--ease); }
+.bar-interest { height: 100%; background: var(--saffron); transition: width 0.6s var(--ease); }
+.bar-pct { font-size: 0.7rem; color: var(--n500); width: 60px; flex-shrink: 0; }
+.chart-legend { display: flex; gap: 16px; padding: 0 24px 16px; flex-wrap: wrap; }
+.cleg { display: flex; align-items: center; gap: 6px; font-size: 0.75rem; color: var(--n700); }
+.cleg-dot { width: 10px; height: 10px; border-radius: 2px; }
+
+/* table */
+.sched-wrap { overflow: hidden; }
+.sched-table { width: 100%; border-collapse: collapse; }
+.sched-table thead { background: #F0EBE5; }
+.sched-table th { color: #1E1210; background: #F0EBE5; font-size: 0.72rem; padding: 13px 18px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; border-bottom: 1px solid var(--n200); text-align: right; }
+.sched-table th:first-child { text-align: left; }
+.sched-table td { color: #1E1210; font-size: 0.84rem; padding: 11px 18px; border-bottom: 1px solid var(--n100); background: var(--white); text-align: right; }
+.sched-table td:first-child { text-align: left; font-weight: 600; }
+.sched-table tbody tr:last-child td { border-bottom: none; }
+.sched-table tbody tr:hover td { background: var(--n100); }
+.td-principal { color: var(--maroon-dark); font-weight: 600; }
+.td-interest { color: var(--saffron); font-weight: 600; }
+.td-balance { color: var(--n500); }
+.sched-total { background: #F0EBE5 !important; font-weight: 700; }
+.show-more { display: block; width: 100%; padding: 13px; text-align: center; font-size: 0.82rem; font-weight: 600; color: var(--n500); background: var(--cream); border: none; border-top: 1px solid var(--n200); cursor: pointer; transition: var(--tx); }
+.show-more:hover { color: var(--maroon-dark); background: var(--n100); }
+
+/* compare card */
+.compare-card { background: var(--white); border-radius: var(--r-lg); border: 1px solid var(--n200); box-shadow: var(--sh-sm); overflow: hidden; }
+.compare-head { padding: 20px 24px; border-bottom: 1px solid var(--n200); display: flex; align-items: center; justify-content: space-between; }
+.compare-head h4 { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: var(--maroon-dark); }
+.compare-body { padding: 0; overflow-x: auto; }
+.compare-table { width: 100%; border-collapse: collapse; min-width: 520px; }
+.compare-table th { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; color: var(--n500); padding: 12px 16px; text-align: right; border-bottom: 1px solid var(--n200); }
+.compare-table th:first-child { text-align: left; }
+.compare-table td { font-size: 0.84rem; padding: 12px 16px; border-bottom: 1px solid var(--n100); text-align: right; }
+.compare-table td:first-child { text-align: left; font-weight: 600; color: var(--maroon-dark); }
+.compare-table tr:last-child td { border-bottom: none; }
+.compare-table tr:hover td { background: var(--n100); }
+.best-rate { color: #085041; background: #e1f5ee; padding: 2px 8px; border-radius: 20px; font-size: 0.78rem; font-weight: 700; }
+
+/* EMI tips */
+.tips-card { background: linear-gradient(135deg, var(--maroon-dark), var(--maroon)); border-radius: var(--r-lg); padding: 28px; color: var(--white); }
+.tips-card h4 { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: var(--white); margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
+.tips-card h4 i { color: var(--saffron-light); }
+.tip-item { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 14px; padding: 12px; background: rgba(255,255,255,0.05); border-radius: var(--r-sm); border: 1px solid rgba(255,255,255,0.06); }
+.tip-icon { width: 32px; height: 32px; border-radius: 8px; background: rgba(232,114,12,0.18); display: flex; align-items: center; justify-content: center; font-size: 0.85rem; color: var(--saffron-light); flex-shrink: 0; }
+.tip-item strong { display: block; font-size: 0.82rem; font-weight: 700; color: rgba(255,255,255,0.9); margin-bottom: 2px; }
+.tip-item span { font-size: 0.74rem; color: rgba(255,255,255,0.47); line-height: 1.5; }
+
+/* Apply section */
+.apply-card { background: var(--white); border-radius: var(--r-lg); border: 1px solid var(--n200); padding: 28px; box-shadow: var(--sh-sm); }
+.apply-card h4 { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: var(--maroon-dark); margin-bottom: 6px; }
+.apply-card p { font-size: 0.85rem; color: var(--n500); margin-bottom: 20px; }
+.apply-steps { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+.astep { display: flex; align-items: center; gap: 12px; }
+.astep-num { width: 28px; height: 28px; border-radius: 50%; background: var(--saffron-pale); color: var(--saffron); font-size: 0.72rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.astep span { font-size: 0.84rem; color: var(--n700); }
+
+/* Reveal */
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.5s var(--ease), transform 0.5s var(--ease); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* Toast */
+.toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(60px); background: var(--maroon-dark); color: var(--white); padding: 13px 24px; border-radius: var(--r-sm); font-size: 0.86rem; font-weight: 500; box-shadow: var(--sh-lg); z-index: 3000; transition: all 0.32s var(--ease); opacity: 0; border-left: 4px solid var(--saffron); white-space: nowrap; }
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* Responsive */
+@media (max-width: 1060px) { .emi-grid { grid-template-columns: 1fr; } .calc-panel { position: static; } }
+@media (max-width: 640px) {
+  .loan-nav { top: 106px; }
+  .result-grid { grid-template-columns: 1fr 1fr; }
+  .donut-wrap { flex-direction: column; }
+  .compare-head { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .view-tabs { width: 100%; }
+}
+/* ---- FOOTER ---- */
+.footer { background: var(--maroon-dark); color: var(--white); padding-top: 0px; }
+.footer-main { padding: 72px 0 48px; }
+.footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 40px; }
+.fb-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.fb-logo img { width: 40px; height: 40px; border-radius: 8px; object-fit: cover; }
+.fb-logo > div { display: flex; flex-direction: column; }
+.fb-logo span { font-family: var(--font-display); font-weight: 700; color: var(--white); font-size: 1.15rem; }
+.fb-logo small { font-size: 0.6rem; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.1em; }
+.footer-brand p { color: rgba(255,255,255,0.45); font-size: 0.86rem; line-height: 1.75; margin-bottom: 20px; }
+.fb-contact { display: flex; flex-direction: column; gap: 8px; }
+.fb-contact span { font-size: 0.82rem; color: rgba(255,255,255,0.45); display: flex; align-items: center; gap: 8px; }
+.fb-contact i { color: var(--saffron); }
+.footer-col h5 { font-size: 0.75rem; font-weight: 700; color: var(--saffron-light); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 18px; }
+.footer-col ul { display: flex; flex-direction: column; gap: 10px; }
+.footer-col a { font-size: 0.85rem; color: rgba(255,255,255,0.5); transition: var(--tx); }
+.footer-col a:hover { color: var(--white); padding-left: 4px; }
+.footer-bottom { border-top: 1px solid rgba(255,255,255,0.07); padding: 20px 0; }
+.footer-bottom .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+.footer-bottom p { font-size: 0.78rem; color: rgba(255,255,255,0.35); }
+.footer-bottom strong { color: rgba(255,255,255,0.5); }
+.fb-links { display: flex; gap: 20px; }
+.fb-links a { font-size: 0.78rem; color: rgba(255,255,255,0.35); transition: var(--tx); }
+.fb-links a:hover { color: var(--white); }
+
+/* ---- MODAL ---- */
+.modal-bg { position: fixed; inset: 0; background: rgba(90,14,14,0.72); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; visibility: hidden; transition: var(--tx); }
+.modal-bg.open { opacity: 1; visibility: visible; }
+.modal-box { background: var(--white); border-radius: var(--r-lg); padding: 40px; width: 100%; max-width: 490px; position: relative; max-height: 90vh; overflow-y: auto; transform: scale(0.94) translateY(20px); transition: var(--tx); }
+.modal-bg.open .modal-box { transform: scale(1) translateY(0); }
+.modal-x { position: absolute; top: 14px; right: 14px; width: 30px; height: 30px; background: var(--n100); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: var(--n500); font-size: 0.85rem; transition: var(--tx); }
+.modal-x:hover { background: var(--n200); color: var(--maroon); }
+.modal-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+.modal-logo img { width: 36px; height: 36px; border-radius: 7px; object-fit: cover; }
+.modal-logo > div { display: flex; flex-direction: column; }
+.modal-logo span { font-family: var(--font-display); font-weight: 700; color: var(--maroon-dark); font-size: 1.05rem; }
+.modal-logo small { font-size: 0.6rem; color: var(--n500); }
+.modal-box h2 { font-family: var(--font-display); font-size: 1.7rem; font-weight: 700; color: var(--maroon-dark); margin-bottom: 4px; }
+.modal-box > p { color: var(--n500); font-size: 0.88rem; margin-bottom: 24px; }
+.modal-note { text-align: center; font-size: 0.82rem; color: var(--n500); margin-top: 16px; }
+.modal-note a { color: var(--maroon); font-weight: 700; }
+</style>
+</head>
+<body>
+
+<!-- TICKER -->
+<div class="ticker-bar">
+  <div class="ticker-inner">
+   <div class="ticker-label"><i class="fas fa-newspaper"></i> Latest Updates</div>
+    <div class="ticker-track">
+      <div class="ticker-content">
+        <span>Home Loan: 8.50% p.a. onwards</span>
+        <span>Personal Loan: 11.99% p.a. onwards</span>
+        <span>Vehicle Loan: 9.25% p.a. onwards</span>
+        <span>Business Loan: 13.50% p.a. onwards</span>
+        <span>Education Loan: 8.75% p.a. onwards</span>
+        <span>Gold Loan: 9.00% p.a. onwards</span>
+        <span>Home Loan: 8.50% p.a. onwards</span>
+        <span>Personal Loan: 11.99% p.a. onwards</span>
+        <span>Vehicle Loan: 9.25% p.a. onwards</span>
+        <span>Business Loan: 13.50% p.a. onwards</span>
+        <span>Education Loan: 8.75% p.a. onwards</span>
+        <span>Gold Loan: 9.00% p.a. onwards</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="logo">
+<div class="logo-emblem" style="background:none;padding:0;overflow:hidden;">
+  <img src="images/lago.webp" alt="Druk PNB Bank Logo" style="width:44px;height:44px;object-fit:contain;border-radius:8px;"/>
+</div>
+      <div>
+        <div class="logo-name">Druk PNB Bank</div>
+        <div class="logo-tag">A Heritage of Trust</div>
+      </div>
+    </a>
+    <a href="index.html" class="nav-back"><i class="fas fa-arrow-left"></i> Back to Home</a>
+    <div class="nav-actions">
+      <a href="#" class="btn-ibanking"><i class="fas fa-lock"></i> Internet Banking</a>
+      <a href="#" class="btn-account">Open Account</a>
+    </div>
+  </div>
+</nav>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="container hero-inner">
+    <div class="breadcrumb">
+      <a href="index.html">Home</a>
+      <i class="fas fa-chevron-right"></i>
+      <a href="#">Tools</a>
+      <i class="fas fa-chevron-right"></i>
+      <span>EMI Calculator</span>
+    </div>
+    <h1>EMI <em>Calculator</em></h1>
+    <p>Plan your finances with precision. Calculate your monthly instalments, total interest, and full repayment schedule in seconds.</p>
+    <div class="hero-badges">
+      <div class="hbadge"><i class="fas fa-check-circle"></i> RMA Compliant Rates</div>
+      <div class="hbadge"><i class="fas fa-bolt"></i> Instant Results</div>
+      <div class="hbadge"><i class="fas fa-file-download"></i> Downloadable Schedule</div>
+      <div class="hbadge"><i class="fas fa-calculator"></i> Reducing & Flat Rate</div>
+    </div>
+  </div>
+</section>
+
+<!-- LOAN TYPE NAV -->
+<div class="loan-nav">
+  <div class="container">
+    <div class="loan-nav-inner">
+      <button class="ltab active" data-loan="home" data-rate="8.50" data-min-rate="8.50"><i class="fas fa-home"></i> Home Loan <span class="rate-chip">8.50%</span></button>
+      <button class="ltab" data-loan="personal" data-rate="11.99" data-min-rate="11.99"><i class="fas fa-user"></i> Personal Loan <span class="rate-chip">11.99%</span></button>
+      <button class="ltab" data-loan="vehicle" data-rate="9.25" data-min-rate="9.25"><i class="fas fa-car"></i> Vehicle Loan <span class="rate-chip">9.25%</span></button>
+      <button class="ltab" data-loan="business" data-rate="13.50" data-min-rate="13.50"><i class="fas fa-briefcase"></i> Business Loan <span class="rate-chip">13.50%</span></button>
+      <button class="ltab" data-loan="education" data-rate="8.75" data-min-rate="8.75"><i class="fas fa-graduation-cap"></i> Education Loan <span class="rate-chip">8.75%</span></button>
+      <button class="ltab" data-loan="gold" data-rate="9.00" data-min-rate="9.00"><i class="fas fa-coins"></i> Gold Loan <span class="rate-chip">9.00%</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN EMI SECTION -->
+<section class="emi-section">
+  <div class="container">
+    <div class="emi-grid">
+
+      <!-- LEFT: Calculator -->
+      <div class="calc-panel reveal">
+        <div class="calc-panel-head">
+          <h3><i class="fas fa-calculator" style="color:var(--saffron-light);margin-right:8px;font-size:1rem;"></i>Loan Calculator</h3>
+          <div class="interest-method-toggle">
+            <button class="imtab active" data-method="reducing">Reducing</button>
+            <button class="imtab" data-method="flat">Flat Rate</button>
+          </div>
+        </div>
+
+        <div class="calc-body">
+
+          <div id="methodBanner" class="method-banner reducing">
+            <i class="fas fa-info-circle"></i>
+            <span><strong>Reducing Balance:</strong> Interest is calculated on the outstanding principal each month. This is the standard method used for most bank loans.</span>
+          </div>
+
+          <!-- Principal -->
+          <div class="cfield">
+            <div class="cfield-head">
+              <label><i class="fas fa-info-circle"></i> Loan Amount</label>
+              <div class="cval-wrap">
+                <span style="font-size:0.75rem;color:var(--n500);">Nu.</span>
+                <input class="cval" id="principalVal" type="text" value="5,00,000" readonly/>
+              </div>
+            </div>
+            <input class="cslider" id="principalSlider" type="range" min="50000" max="10000000" step="50000" value="500000"/>
+            <div class="crange-labels"><span>Nu. 50,000</span><span>Nu. 1 Cr</span></div>
+          </div>
+
+          <!-- Rate -->
+          <div class="cfield">
+            <div class="cfield-head">
+              <label><i class="fas fa-info-circle"></i> Interest Rate (p.a.)</label>
+              <div class="cval-wrap">
+                <input class="cval" id="rateVal" type="text" value="8.50" readonly/>
+                <span style="font-size:0.75rem;color:var(--n500);">%</span>
+              </div>
+            </div>
+            <input class="cslider" id="rateSlider" type="range" min="5" max="24" step="0.25" value="8.50"/>
+            <div class="crange-labels"><span>5%</span><span>24%</span></div>
+          </div>
+
+          <!-- Tenure -->
+          <div class="cfield">
+            <div class="cfield-head">
+              <label><i class="fas fa-info-circle"></i> Loan Tenure</label>
+              <div class="cval-wrap" style="gap:4px;">
+                <input class="cval" id="tenureVal" type="text" value="20" readonly style="min-width:60px;"/>
+                <div style="display:flex;gap:4px;">
+                  <button class="imtab active" id="yrBtn" style="padding:4px 10px;font-size:0.72rem;">Yrs</button>
+                  <button class="imtab" id="moBtn" style="padding:4px 10px;font-size:0.72rem;">Mos</button>
+                </div>
+              </div>
+            </div>
+            <input class="cslider" id="tenureSlider" type="range" min="1" max="30" step="1" value="20"/>
+            <div class="crange-labels"><span id="tenureMin">1 Yr</span><span id="tenureMax">30 Yrs</span></div>
+          </div>
+
+          <!-- GST Toggle -->
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;padding:12px 16px;background:var(--n100);border-radius:var(--r-sm);">
+            <div>
+              <div style="font-size:0.82rem;font-weight:600;color:var(--n700);">Include GST on Interest</div>
+              <div style="font-size:0.72rem;color:var(--n500);">18% GST applied on interest component</div>
+            </div>
+            <label class="toggle-switch" style="position:relative;width:40px;height:22px;">
+              <input type="checkbox" id="gstToggle" style="opacity:0;width:0;height:0;position:absolute;">
+              <span id="toggleTrack" style="position:absolute;cursor:pointer;inset:0;background:var(--n300);border-radius:22px;transition:0.3s;">
+                <span id="toggleThumb" style="position:absolute;width:16px;height:16px;border-radius:50%;background:#fff;top:3px;left:3px;transition:0.3s;box-shadow:0 1px 4px rgba(0,0,0,0.2);"></span>
+              </span>
+            </label>
+          </div>
+
+          <!-- Results -->
+          <div class="emi-result-box">
+            <div class="emi-label">Monthly EMI</div>
+            <div class="emi-amount" id="emiDisplay">Nu. 4,333</div>
+            <div class="emi-sub">Payable every month for <span id="tenureDisplay">20 years</span></div>
+            <div class="emi-period-note"><i class="fas fa-calendar-alt"></i> <span id="emiPeriodNote">Total 240 instalments</span></div>
+          </div>
+
+          <div class="result-grid">
+            <div class="rbox">
+              <span>Principal</span>
+              <strong id="principalDisplay">Nu. 5,00,000</strong>
+            </div>
+            <div class="rbox highlight">
+              <span>Total Interest</span>
+              <strong id="interestDisplay">Nu. 5,40,000</strong>
+            </div>
+            <div class="rbox">
+              <span>Total Payable</span>
+              <strong id="totalDisplay">Nu. 10,40,000</strong>
+            </div>
+          </div>
+
+          <!-- Donut -->
+          <div class="donut-wrap">
+            <svg class="donut-svg" width="96" height="96" viewBox="0 0 96 96">
+              <circle cx="48" cy="48" r="38" fill="none" stroke="var(--n200)" stroke-width="14"/>
+              <circle id="donutInterest" cx="48" cy="48" r="38" fill="none" stroke="var(--saffron)" stroke-width="14"
+                stroke-dasharray="238.76 238.76" stroke-dashoffset="0" stroke-linecap="butt"
+                transform="rotate(-90 48 48)" style="transition:stroke-dashoffset 0.6s var(--ease);"/>
+              <circle id="donutPrincipal" cx="48" cy="48" r="38" fill="none" stroke="var(--maroon-dark)" stroke-width="14"
+                stroke-dasharray="238.76 238.76" stroke-dashoffset="0" stroke-linecap="butt"
+                transform="rotate(-90 48 48)" style="transition:stroke-dashoffset 0.6s var(--ease);"/>
+              <text x="48" y="44" text-anchor="middle" font-size="9" fill="var(--n500)" font-family="Outfit,sans-serif">Interest</text>
+              <text x="48" y="56" text-anchor="middle" font-size="10" fill="var(--maroon-dark)" font-weight="700" font-family="Outfit,sans-serif" id="donutPct">52%</text>
+            </svg>
+            <div class="donut-legend">
+              <div class="dl-item"><div class="dl-dot principal"></div><span>Principal Amount</span><span class="dl-val" id="dlPrincipal">48%</span></div>
+              <div class="dl-item"><div class="dl-dot interest"></div><span>Total Interest</span><span class="dl-val" id="dlInterest">52%</span></div>
+              <div class="dl-item" id="gstLegendRow" style="display:none;"><div class="dl-dot gst"></div><span>GST on Interest</span><span class="dl-val" id="dlGst">0%</span></div>
+            </div>
+          </div>
+
+          <button class="cta-primary" onclick="window.print()"><i class="fas fa-file-download"></i> Download Amortization Schedule</button>
+          <button class="cta-outline" onclick="showToast('Loan application opened!')"><i class="fas fa-paper-plane"></i> Apply for This Loan</button>
+
+        </div><!-- /calc-body -->
+      </div><!-- /calc-panel -->
+
+      <!-- RIGHT: Results -->
+      <div class="results-panel">
+
+        <!-- Amortization card -->
+        <div class="amort-card reveal" style="transition-delay:0.1s;">
+          <div class="amort-head">
+            <h4>Repayment Schedule</h4>
+            <div class="view-tabs">
+              <button class="vtab active" id="yearlyTabBtn">Yearly</button>
+              <button class="vtab" id="monthlyTabBtn">Monthly</button>
+              <button class="vtab" id="chartTabBtn">Chart</button>
+            </div>
+          </div>
+
+          <!-- YEARLY TABLE -->
+          <div id="yearlyView" class="sched-wrap">
+            <table class="sched-table">
+              <thead>
+                <tr>
+                  <th>Year</th>
+                  <th>Opening Balance</th>
+                  <th>Principal Paid</th>
+                  <th>Interest Paid</th>
+                  <th>Closing Balance</th>
+                </tr>
+              </thead>
+              <tbody id="yearlyBody"></tbody>
+            </table>
+            <button class="show-more" id="showMoreYearly" onclick="toggleYearlyRows()">Show all years <i class="fas fa-chevron-down"></i></button>
+          </div>
+
+          <!-- MONTHLY TABLE -->
+          <div id="monthlyView" class="sched-wrap" style="display:none;">
+            <table class="sched-table">
+              <thead>
+                <tr>
+                  <th>Month</th>
+                  <th>EMI</th>
+                  <th>Principal</th>
+                  <th>Interest</th>
+                  <th>Balance</th>
+                </tr>
+              </thead>
+              <tbody id="monthlyBody"></tbody>
+            </table>
+            <button class="show-more" id="showMoreMonthly" onclick="toggleMonthlyRows()">Show all months <i class="fas fa-chevron-down"></i></button>
+          </div>
+
+          <!-- CHART VIEW -->
+          <div id="chartView" class="bar-chart-wrap" style="display:none;">
+            <div class="chart-legend" style="margin-bottom:16px;">
+              <div class="cleg"><div class="cleg-dot" style="background:var(--maroon-dark);"></div> Principal</div>
+              <div class="cleg"><div class="cleg-dot" style="background:var(--saffron);"></div> Interest</div>
+            </div>
+            <div id="barChart"></div>
+          </div>
+        </div>
+
+        <!-- Comparison table -->
+        <div class="compare-card reveal" style="transition-delay:0.15s;">
+          <div class="compare-head">
+            <h4>Loan Tenure Comparison</h4>
+            <span style="font-size:0.78rem;color:var(--n500);" id="compareSubtitle">Same loan at different tenures</span>
+          </div>
+          <div class="compare-body">
+            <table class="compare-table" id="compareTable">
+              <thead>
+                <tr>
+                  <th>Tenure</th>
+                  <th>Monthly EMI</th>
+                  <th>Total Interest</th>
+                  <th>Total Payable</th>
+                  <th>Savings</th>
+                </tr>
+              </thead>
+              <tbody id="compareBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Tips -->
+        <div class="tips-card reveal" style="transition-delay:0.2s;">
+          <h4><i class="fas fa-lightbulb"></i> Smart Borrowing Tips</h4>
+          <div class="tip-item">
+            <div class="tip-icon"><i class="fas fa-arrow-down"></i></div>
+            <div>
+              <strong>Choose Shorter Tenure</strong>
+              <span>A 10-year loan vs 20-year loan saves you massive interest — often 40–60% less. Stretch only if cash flow demands it.</span>
+            </div>
+          </div>
+          <div class="tip-item">
+            <div class="tip-icon"><i class="fas fa-hand-holding-usd"></i></div>
+            <div>
+              <strong>Make Part-Prepayments</strong>
+              <span>Even Nu. 5,000 extra per year can cut years off your loan. Druk PNB allows prepayments with minimal charges on home loans.</span>
+            </div>
+          </div>
+          <div class="tip-item">
+            <div class="tip-icon"><i class="fas fa-percent"></i></div>
+            <div>
+              <strong>Reducing vs Flat Rate</strong>
+              <span>A flat rate of 8% equals roughly 14–16% reducing rate. Always ask for reducing balance equivalent before comparing offers.</span>
+            </div>
+          </div>
+          <div class="tip-item">
+            <div class="tip-icon"><i class="fas fa-credit-card"></i></div>
+            <div>
+              <strong>Maintain Good Credit</strong>
+              <span>A strong CIBIL score (750+) can get you 0.5–1% lower rate on home loans — saving thousands over the loan tenure.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Apply -->
+        <div class="apply-card reveal" style="transition-delay:0.25s;">
+          <h4>Ready to Apply?</h4>
+          <p>Get your loan processed in as little as 3 working days with minimal documentation.</p>
+          <div class="apply-steps">
+            <div class="astep"><div class="astep-num">1</div><span>Fill online application form</span></div>
+            <div class="astep"><div class="astep-num">2</div><span>Upload KYC & income documents</span></div>
+            <div class="astep"><div class="astep-num">3</div><span>Get approval & sign digitally</span></div>
+            <div class="astep"><div class="astep-num">4</div><span>Loan disbursed to your account</span></div>
+          </div>
+          <button class="cta-primary" onclick="showToast('Application form opened!')"><i class="fas fa-paper-plane"></i> Start Loan Application</button>
+        </div>
+
+      </div><!-- /results-panel -->
+    </div>
+  </div>
+</section>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+   DRUK PNB — EMI Calculator JS
+   ============================================================ */
+
+// ── State ──
+let state = {
+  principal: 500000,
+  rate: 8.50,
+  tenureYears: 20,
+  tenureMonths: 240,
+  tenureMode: 'years', // 'years' | 'months'
+  method: 'reducing',  // 'reducing' | 'flat'
+  gst: false,
+  currentLoan: 'home',
+  yearlyShowAll: false,
+  monthlyShowAll: false
+};
+
+const MONTHLY_PREVIEW = 5;
+const YEARLY_PREVIEW  = 5;
+
+// ── Format helpers ──
+function fmt(n) {
+  if (n >= 10000000) return 'Nu. ' + (n/10000000).toFixed(2) + ' Cr';
+  if (n >= 100000)   return 'Nu. ' + (n/100000).toFixed(2) + ' L';
+  return 'Nu. ' + Math.round(n).toLocaleString('en-IN');
+}
+function fmtShort(n) {
+  if (n >= 10000000) return (n/10000000).toFixed(2) + ' Cr';
+  if (n >= 100000)   return (n/100000).toFixed(1) + ' L';
+  return Math.round(n).toLocaleString('en-IN');
+}
+function fmtInput(n) {
+  if (n >= 10000000) return (n/10000000).toFixed(2) + ' Cr';
+  if (n >= 100000)   return (n/100000).toFixed(2) + ' L';
+  return n.toLocaleString('en-IN');
+}
+
+// ── EMI Calculation ──
+function calcEMI(P, annualRate, months, method) {
+  if (method === 'flat') {
+    const totalInterest = P * (annualRate / 100) * (months / 12);
+    const emi = (P + totalInterest) / months;
+    return { emi, totalInterest, totalPayable: P + totalInterest };
+  }
+  const r = annualRate / 12 / 100;
+  if (r === 0) {
+    return { emi: P / months, totalInterest: 0, totalPayable: P };
+  }
+  const emi = P * r * Math.pow(1 + r, months) / (Math.pow(1 + r, months) - 1);
+  const totalPayable = emi * months;
+  const totalInterest = totalPayable - P;
+  return { emi, totalInterest, totalPayable };
+}
+
+// ── Amortization Schedule (monthly) ──
+function buildMonthlySchedule(P, annualRate, months, method) {
+  const sched = [];
+  let balance = P;
+  const r = annualRate / 12 / 100;
+  const { emi } = calcEMI(P, annualRate, months, method);
+
+  for (let m = 1; m <= months; m++) {
+    let interest, principal;
+    if (method === 'flat') {
+      interest  = P * (annualRate / 100) / 12;
+      principal = emi - interest;
+    } else {
+      interest  = balance * r;
+      principal = emi - interest;
+    }
+    balance -= principal;
+    if (balance < 0.01) balance = 0;
+    const gstAmt = state.gst ? interest * 0.18 : 0;
+    sched.push({ month: m, emi: emi + gstAmt, principal, interest, gst: gstAmt, balance: Math.max(0, balance) });
+  }
+  return sched;
+}
+
+// ── Aggregate to yearly ──
+function buildYearlySchedule(monthly) {
+  const yearly = [];
+  let m = monthly[0];
+  const totalMonths = monthly.length;
+  const fullYears = Math.floor(totalMonths / 12);
+  const remainder = totalMonths % 12;
+
+  for (let y = 0; y < fullYears; y++) {
+    const slice = monthly.slice(y * 12, y * 12 + 12);
+    const opening = y === 0 ? state.principal : yearly[y - 1].closing;
+    const principalPaid = slice.reduce((s, r) => s + r.principal, 0);
+    const interestPaid  = slice.reduce((s, r) => s + r.interest, 0);
+    const gstPaid       = slice.reduce((s, r) => s + r.gst, 0);
+    const closing = slice[slice.length - 1].balance;
+    yearly.push({ year: y + 1, opening, principalPaid, interestPaid, gstPaid, closing });
+  }
+  if (remainder > 0) {
+    const slice = monthly.slice(fullYears * 12);
+    const opening = yearly.length ? yearly[yearly.length - 1].closing : state.principal;
+    const principalPaid = slice.reduce((s, r) => s + r.principal, 0);
+    const interestPaid  = slice.reduce((s, r) => s + r.interest, 0);
+    const gstPaid       = slice.reduce((s, r) => s + r.gst, 0);
+    const closing = 0;
+    yearly.push({ year: fullYears + 1, opening, principalPaid, interestPaid, gstPaid, closing });
+  }
+  return yearly;
+}
+
+// ── Main update ──
+function update() {
+  const P = state.principal;
+  const months = state.tenureMonths;
+  const { emi, totalInterest, totalPayable } = calcEMI(P, state.rate, months, state.method);
+  const gstOnInterest = state.gst ? totalInterest * 0.18 : 0;
+  const emiWithGst    = state.gst ? emi * 1.18 : emi; // approx display
+
+  // EMI display
+  document.getElementById('emiDisplay').textContent = fmt(state.gst ? emiWithGst : emi);
+  document.getElementById('tenureDisplay').textContent =
+    state.tenureMode === 'years' ? state.tenureYears + ' year' + (state.tenureYears > 1 ? 's' : '') : state.tenureMonths + ' months';
+  document.getElementById('emiPeriodNote').textContent = `Total ${months} instalment${months > 1 ? 's' : ''}`;
+
+  // Result boxes
+  document.getElementById('principalDisplay').textContent = fmt(P);
+  document.getElementById('interestDisplay').textContent  = fmt(totalInterest + gstOnInterest);
+  document.getElementById('totalDisplay').textContent     = fmt(totalPayable + gstOnInterest);
+
+  // Donut
+  const circumference = 2 * Math.PI * 38; // 238.76
+  const interestPct   = (totalInterest + gstOnInterest) / (totalPayable + gstOnInterest);
+  const principalPct  = P / (totalPayable + gstOnInterest);
+  const interestArc   = interestPct * circumference;
+  const principalArc  = principalPct * circumference;
+
+  const donutI = document.getElementById('donutInterest');
+  const donutP = document.getElementById('donutPrincipal');
+  donutI.setAttribute('stroke-dasharray', `${interestArc} ${circumference}`);
+  donutI.setAttribute('stroke-dashoffset', '0');
+  donutP.setAttribute('stroke-dasharray', `${principalArc} ${circumference}`);
+  donutP.setAttribute('stroke-dashoffset', -interestArc);
+  document.getElementById('donutPct').textContent = Math.round(interestPct * 100) + '%';
+  document.getElementById('dlPrincipal').textContent = Math.round(principalPct * 100) + '%';
+  document.getElementById('dlInterest').textContent  = Math.round(interestPct * 100) + '%';
+
+  // GST legend row
+  document.getElementById('gstLegendRow').style.display = state.gst ? 'flex' : 'none';
+  if (state.gst) document.getElementById('dlGst').textContent = '18%*';
+
+  // Build schedules
+  const monthly = buildMonthlySchedule(P, state.rate, months, state.method);
+  const yearly  = buildYearlySchedule(monthly);
+
+  renderYearly(yearly);
+  renderMonthly(monthly);
+  renderChart(yearly);
+  renderCompare(P, state.rate, months);
+}
+
+// ── Yearly table ──
+function renderYearly(yearly) {
+  const tb = document.getElementById('yearlyBody');
+  const btn = document.getElementById('showMoreYearly');
+  const rows = state.yearlyShowAll ? yearly : yearly.slice(0, YEARLY_PREVIEW);
+  tb.innerHTML = rows.map(r => `
+    <tr>
+      <td>Year ${r.year}</td>
+      <td>${fmtShort(r.opening)}</td>
+      <td class="td-principal">${fmtShort(r.principalPaid)}</td>
+      <td class="td-interest">${fmtShort(r.interestPaid + r.gstPaid)}</td>
+      <td class="td-balance">${fmtShort(r.closing)}</td>
+    </tr>
+  `).join('') + `
+    <tr>
+      <td style="font-weight:700;color:var(--maroon-dark);">Total</td>
+      <td>—</td>
+      <td class="td-principal" style="font-weight:700;">${fmtShort(yearly.reduce((s,r)=>s+r.principalPaid,0))}</td>
+      <td class="td-interest" style="font-weight:700;">${fmtShort(yearly.reduce((s,r)=>s+r.interestPaid+r.gstPaid,0))}</td>
+      <td style="font-weight:700;color:var(--n500);">—</td>
+    </tr>
+  `;
+  btn.style.display = yearly.length <= YEARLY_PREVIEW ? 'none' : 'block';
+  btn.innerHTML = state.yearlyShowAll ? 'Show less <i class="fas fa-chevron-up"></i>' : `Show all ${yearly.length} years <i class="fas fa-chevron-down"></i>`;
+}
+
+// ── Monthly table ──
+function renderMonthly(monthly) {
+  const tb  = document.getElementById('monthlyBody');
+  const btn = document.getElementById('showMoreMonthly');
+  const rows = state.monthlyShowAll ? monthly : monthly.slice(0, MONTHLY_PREVIEW);
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const now = new Date();
+  tb.innerHTML = rows.map(r => {
+    const d = new Date(now.getFullYear(), now.getMonth() + r.month - 1);
+    const label = months[d.getMonth()] + ' ' + d.getFullYear();
+    return `
+      <tr>
+        <td>${label}</td>
+        <td>${fmtShort(r.emi)}</td>
+        <td class="td-principal">${fmtShort(r.principal)}</td>
+        <td class="td-interest">${fmtShort(r.interest + r.gst)}</td>
+        <td class="td-balance">${fmtShort(r.balance)}</td>
+      </tr>
+    `;
+  }).join('');
+  btn.style.display = monthly.length <= MONTHLY_PREVIEW ? 'none' : 'block';
+  btn.innerHTML = state.monthlyShowAll ? 'Show less <i class="fas fa-chevron-up"></i>' : `Show all ${monthly.length} months <i class="fas fa-chevron-down"></i>`;
+}
+
+// ── Bar chart ──
+function renderChart(yearly) {
+  const wrap = document.getElementById('barChart');
+  const maxPaid = Math.max(...yearly.map(r => r.principalPaid + r.interestPaid + r.gstPaid));
+  wrap.innerHTML = yearly.map(r => {
+    const total = r.principalPaid + r.interestPaid + r.gstPaid;
+    const pPct  = (r.principalPaid / total) * 100;
+    const iPct  = ((r.interestPaid + r.gstPaid) / total) * 100;
+    const widthPct = (total / maxPaid) * 100;
+    return `
+      <div class="bar-row">
+        <div class="bar-yr">Yr ${r.year}</div>
+        <div class="bar-track" style="max-width:${widthPct}%">
+          <div class="bar-principal" style="width:${pPct}%"></div>
+          <div class="bar-interest" style="width:${iPct}%"></div>
+        </div>
+        <div class="bar-pct">${Math.round(pPct)}% / ${Math.round(iPct)}%</div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ── Comparison table ──
+function renderCompare(P, rate, baseTenure) {
+  const tenures = [5, 10, 15, 20, 25, 30].filter(t => t * 12 >= 12);
+  const tb = document.getElementById('compareBody');
+  const baseResult = calcEMI(P, rate, baseTenure, state.method);
+  let minInterest = Infinity;
+  const results = tenures.map(t => {
+    const r = calcEMI(P, rate, t * 12, state.method);
+    if (r.totalInterest < minInterest) minInterest = r.totalInterest;
+    return { tenure: t, ...r };
+  });
+  tb.innerHTML = results.map(r => {
+    const isBase = r.tenure * 12 === baseTenure;
+    const savings = r.totalInterest === minInterest ? '<span class="best-rate">Best</span>' : '-' + fmtShort(r.totalInterest - minInterest);
+    return `
+      <tr style="${isBase ? 'background:var(--saffron-pale);' : ''}">
+        <td style="${isBase ? 'color:var(--maroon-dark);' : ''}">${r.tenure} Years ${isBase ? '✦' : ''}</td>
+        <td>${fmtShort(r.emi)}/mo</td>
+        <td style="color:var(--saffron);">${fmtShort(r.totalInterest)}</td>
+        <td>${fmtShort(r.totalPayable)}</td>
+        <td>${savings}</td>
+      </tr>
+    `;
+  }).join('');
+}
+
+// ── Toggle yearly rows ──
+function toggleYearlyRows() {
+  state.yearlyShowAll = !state.yearlyShowAll;
+  update();
+}
+function toggleMonthlyRows() {
+  state.monthlyShowAll = !state.monthlyShowAll;
+  update();
+}
+
+// ── View tabs ──
+function setView(view) {
+  ['yearlyView','monthlyView','chartView'].forEach(id => document.getElementById(id).style.display = 'none');
+  document.getElementById(view + 'View').style.display = 'block';
+  ['yearlyTabBtn','monthlyTabBtn','chartTabBtn'].forEach(id => document.getElementById(id).classList.remove('active'));
+  document.getElementById(view + 'TabBtn').classList.add('active');
+}
+document.getElementById('yearlyTabBtn').onclick  = () => setView('yearly');
+document.getElementById('monthlyTabBtn').onclick = () => setView('monthly');
+document.getElementById('chartTabBtn').onclick   = () => setView('chart');
+
+// ── Sliders ──
+function bindSlider(sliderId, valId, transform, format) {
+  const slider = document.getElementById(sliderId);
+  const valEl  = document.getElementById(valId);
+  slider.addEventListener('input', () => {
+    const v = transform(parseFloat(slider.value));
+    valEl.value = format(v);
+    update();
+  });
+  // fill track
+  slider.addEventListener('input', () => updateSliderFill(slider));
+}
+
+function updateSliderFill(slider) {
+  const pct = (slider.value - slider.min) / (slider.max - slider.min) * 100;
+  slider.style.background = `linear-gradient(to right, var(--saffron) ${pct}%, var(--n200) ${pct}%)`;
+}
+
+// Principal
+document.getElementById('principalSlider').addEventListener('input', function() {
+  state.principal = parseFloat(this.value);
+  document.getElementById('principalVal').value = fmtInput(state.principal);
+  updateSliderFill(this);
+  state.yearlyShowAll = false; state.monthlyShowAll = false;
+  update();
+});
+
+// Rate
+document.getElementById('rateSlider').addEventListener('input', function() {
+  state.rate = parseFloat(this.value);
+  document.getElementById('rateVal').value = state.rate.toFixed(2);
+  updateSliderFill(this);
+  state.yearlyShowAll = false; state.monthlyShowAll = false;
+  update();
+});
+
+// Tenure
+document.getElementById('tenureSlider').addEventListener('input', function() {
+  const v = parseInt(this.value);
+  if (state.tenureMode === 'years') {
+    state.tenureYears  = v;
+    state.tenureMonths = v * 12;
+    document.getElementById('tenureVal').value = v;
+  } else {
+    state.tenureMonths = v;
+    state.tenureYears  = Math.round(v / 12 * 10) / 10;
+    document.getElementById('tenureVal').value = v;
+  }
+  updateSliderFill(this);
+  state.yearlyShowAll = false; state.monthlyShowAll = false;
+  update();
+});
+
+// Tenure mode
+document.getElementById('yrBtn').onclick = function() {
+  if (state.tenureMode === 'years') return;
+  state.tenureMode = 'years';
+  this.classList.add('active');
+  document.getElementById('moBtn').classList.remove('active');
+  const slider = document.getElementById('tenureSlider');
+  slider.min = 1; slider.max = 30; slider.step = 1;
+  slider.value = state.tenureYears = Math.max(1, Math.round(state.tenureMonths / 12));
+  state.tenureMonths = state.tenureYears * 12;
+  document.getElementById('tenureVal').value = state.tenureYears;
+  document.getElementById('tenureMin').textContent = '1 Yr';
+  document.getElementById('tenureMax').textContent = '30 Yrs';
+  updateSliderFill(slider);
+  update();
+};
+document.getElementById('moBtn').onclick = function() {
+  if (state.tenureMode === 'months') return;
+  state.tenureMode = 'months';
+  this.classList.add('active');
+  document.getElementById('yrBtn').classList.remove('active');
+  const slider = document.getElementById('tenureSlider');
+  slider.min = 6; slider.max = 360; slider.step = 6;
+  slider.value = state.tenureMonths;
+  document.getElementById('tenureVal').value = state.tenureMonths;
+  document.getElementById('tenureMin').textContent = '6 Mos';
+  document.getElementById('tenureMax').textContent = '360 Mos';
+  updateSliderFill(slider);
+  update();
+};
+
+// Interest method
+document.querySelectorAll('.imtab').forEach(btn => {
+  if (btn.dataset.method) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.imtab[data-method]').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      state.method = this.dataset.method;
+      const banner = document.getElementById('methodBanner');
+      banner.className = 'method-banner ' + state.method;
+      if (state.method === 'reducing') {
+        banner.innerHTML = '<i class="fas fa-info-circle"></i><span><strong>Reducing Balance:</strong> Interest is calculated on the outstanding principal each month. This is the standard method used for most bank loans.</span>';
+      } else {
+        banner.innerHTML = '<i class="fas fa-exclamation-triangle"></i><span><strong>Flat Rate:</strong> Interest is calculated on the original loan amount throughout the tenure. Effective rate is roughly 1.7–1.9× the stated flat rate.</span>';
+      }
+      state.yearlyShowAll = false; state.monthlyShowAll = false;
+      update();
+    });
+  }
+});
+
+// GST toggle
+const gstToggle = document.getElementById('gstToggle');
+const toggleTrack = document.getElementById('toggleTrack');
+const toggleThumb = document.getElementById('toggleThumb');
+gstToggle.addEventListener('change', function() {
+  state.gst = this.checked;
+  toggleTrack.style.background = this.checked ? 'var(--saffron)' : 'var(--n300)';
+  toggleThumb.style.left = this.checked ? '21px' : '3px';
+  update();
+});
+
+// Loan type tabs
+document.querySelectorAll('.ltab').forEach(tab => {
+  tab.addEventListener('click', function() {
+    document.querySelectorAll('.ltab').forEach(t => t.classList.remove('active'));
+    this.classList.add('active');
+    const rate = parseFloat(this.dataset.rate);
+    state.rate = rate;
+    state.currentLoan = this.dataset.loan;
+    document.getElementById('rateSlider').value = rate;
+    document.getElementById('rateVal').value = rate.toFixed(2);
+    updateSliderFill(document.getElementById('rateSlider'));
+    state.yearlyShowAll = false; state.monthlyShowAll = false;
+    update();
+  });
+});
+
+// Scroll reveal
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Navbar scroll
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 10);
+});
+
+// Toast
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// Init slider fills
+['principalSlider','rateSlider','tenureSlider'].forEach(id => updateSliderFill(document.getElementById(id)));
+
+// Initial render
+update();
+</script>
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-main">
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <div class="fb-logo">
+              <img src="lago.webp" alt="Druk PNB Bank"/>
+              <div>
+                <span>Druk PNB</span>
+                <small>Bank Limited</small>
+              </div>
+            </div>
+            <p>Committed to the financial well-being of every Bhutanese — Your Partner in Growth since 2010. Regulated by the Royal Monetary Authority of Bhutan.</p>
+            <div class="fb-contact">
+              <span><i class="fas fa-phone-alt"></i> Toll Free: 1313</span>
+              <span><i class="fas fa-map-marker-alt"></i> Chang Lam, Thimphu</span>
+            </div>
+          </div>
+          <div class="footer-col">
+            <h5>Personal Banking</h5>
+            <ul>
+              <li><a href="https://drukpnbbank.bt/personal-banking/saving-funds-account/" target="_blank">Saving Funds Account</a></li>
+              <li><a href="https://drukpnbbank.bt/personal-banking/recurring-account/" target="_blank">Recurring Account</a></li>
+              <li><a href="https://drukpnbbank.bt/personal-banking/fixed-deposit-account/" target="_blank">Fixed Deposit Account</a></li>
+              <li><a href="https://drukpnbbank.bt/personal-banking/current-account/" target="_blank">Current Account</a></li>
+              <li><a href="https://drukpnbbank.bt/personal-banking/remit-bhutan/" target="_blank">Remit Bhutan</a></li>
+              <li><a href="https://drukpnbbank.bt/loan-schemes/" target="_blank">Loan Schemes</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h5>Business &amp; Corporate</h5>
+            <ul>
+              <li><a href="https://drukpnbbank.bt/business-sector/sme-sector/" target="_blank">SME Sector</a></li>
+              <li><a href="https://drukpnbbank.bt/business-sector/traders-finance/" target="_blank">Traders Finance</a></li>
+              <li><a href="https://drukpnbbank.bt/loan-schemes/corporate-banking/loan-against-future-lease-rentals/" target="_blank">Loan Against Lease Rentals</a></li>
+              <li><a href="https://drukpnbbank.bt/unclaimed-dividend/" target="_blank">Unclaimed Dividend</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h5>Quick Links</h5>
+            <ul>
+              <li><a href="https://drukpnbbank.bt/about-us/vision-mission/" target="_blank">Vision & Mission</a></li>
+              <li><a href="https://drukpnbbank.bt/financials/" target="_blank">Financials</a></li>
+              <li><a href="https://drukpnbbank.bt/about-us/bod-management-team/" target="_blank">Board & Management</a></li>
+              <li><a href="https://drukpnbbank.bt/category/career/" target="_blank">Career Opportunities</a></li>
+              <li><a href="https://www.onlinepnbbhutan.in/drukpnbret/AuthenticationController?__START_TRAN_FLAG__=Y" target="_blank">Internet Banking</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">
+        <p>&copy; 2026 Druk PNB Bank Limited. All rights reserved. Regulated by the <strong>Royal Monetary Authority of Bhutan</strong>.</p>
+        <div class="fb-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Use</a>
+          <a href="#">Disclaimer</a>
+          <a href="https://drukpnbbank.bt/atm-branch-location/" target="_blank">Branch Locator</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- OPEN ACCOUNT MODAL -->
+  <div class="modal-bg" id="modalBg">
+    <div class="modal-box" id="modalBox">
+      <button class="modal-x" onclick="closeModal()"><i class="fas fa-times"></i></button>
+      <div class="modal-logo">
+        <img src="images/lago.webp" alt="Druk PNB Bank"/>
+        <div>
+          <span>Druk PNB Bank</span>
+          <small>Open Account Online</small>
+        </div>
+      </div>
+      <h2>Open Your Account</h2>
+      <p>Fill in your details to get started. Our team will reach you within 24 hours.</p>
+      <form id="accountForm" novalidate>
+        <div class="frow">
+          <div class="fgroup">
+            <label>First Name</label>
+            <input type="text" placeholder="Tshering" required/>
+          </div>
+          <div class="fgroup">
+            <label>Last Name</label>
+            <input type="text" placeholder="Wangmo" required/>
+          </div>
+        </div>
+        <div class="fgroup">
+          <label>CID / Citizenship Number</label>
+          <input type="text" placeholder="10101000XXXXX" required/>
+        </div>
+        <div class="fgroup">
+          <label>Phone Number</label>
+          <input type="tel" placeholder="+975 17 xxxxxx" required/>
+        </div>
+        <div class="fgroup">
+          <label>Account Type</label>
+          <select>
+            <option>Saving Funds Account</option>
+            <option>Current Account</option>
+            <option>Fixed Deposit Account</option>
+            <option>Recurring Account</option>
+          </select>
+        </div>
+        <button type="submit" class="cta-primary full">Submit Application <i class="fas fa-arrow-right"></i></button>
+      </form>
+      <p class="modal-note">Already have an account? <a href="https://www.onlinepnbbhutan.in/drukpnbret/AuthenticationController?__START_TRAN_FLAG__=Y" target="_blank">Login to Internet Banking</a></p>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast-msg" id="toast"></div>
+
+  <!-- BACK TO TOP -->
+  <button class="btt" id="btt" aria-label="Back to top"><i class="fas fa-chevron-up"></i></button>
+
+  <script src="script.js"></script>
+  <script src="hero-slider.js" defer></script>
+</body>
+</html>

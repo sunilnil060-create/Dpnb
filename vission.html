@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Druk PNB Bank Limited | Your Partner in Growth</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    /* Page-specific two-column layout for vision page */
+    .vision-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      margin-top: 40px;
+    }
+
+    .vision-mission {
+      background: white;
+      padding: 40px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .quick-links {
+      background: linear-gradient(135deg, #f4b860 0%, #f9d376 100%);
+      padding: 40px;
+    }
+
+    .quick-link {
+      background: white;
+      padding: 14px 18px;
+      display: flex;
+      justify-content: space-between;
+      transition: all 0.3s ease;
+    }
+
+    .quick-link:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      transform: translateX(5px);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TICKER -->
+  <div class="ticker-bar" id="tickerBar">
+    <div class="ticker-inner">
+      <span class="ticker-label"><i class="fas fa-rss"></i> Live Updates</span>
+      <div class="ticker-track">
+        <div class="ticker-content">
+          <span>New Interest Rates on Fixed Deposits effective 1st May 2026 &nbsp;•&nbsp;</span>
+          <span>BDBL &amp; DPNBL Joint Auction Notification — <a href="#">View Details</a> &nbsp;•&nbsp;</span>
+          <span>16th AGM Proxy Form now available for download &nbsp;•&nbsp;</span>
+          <span>Vacancy: Deputy Chief Executive Officer — Applications open &nbsp;•&nbsp;</span>
+          <span>Toll Free: <strong>1313</strong> | Mon–Fri 9AM–5PM &nbsp;•&nbsp;</span>
+          <span>New Interest Rates on Fixed Deposits effective 1st May 2026 &nbsp;•&nbsp;</span>
+          <span>BDBL &amp; DPNBL Joint Auction Notification — <a href="#">View Details</a> &nbsp;•&nbsp;</span>
+        </div>
+      </div>
+    </div>
+    <button class="ticker-close" id="tickerClose"><i class="fas fa-times"></i></button>
+  </div>
+
+  <!-- NAVBAR -->
+  <header class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="#" class="logo">
+        <div class="logo-emblem">
+          <img src="images/lago.webp" alt="Druk PNB Bank Logo"/>
+        </div>
+        <div class="logo-words">
+          <a href="index.html"><span class="logo-name">Druk PNB</span></a>
+          <span class="logo-tag">Bank Limited</span>
+        </div>
+      </a>
+
+      <nav class="nav-menu" id="navMenu">
+        <div class="nav-group has-mega">
+          <button class="nav-btn" type="button">About Us <i class="fas fa-angle-down"></i></button>
+          <div class="mega-panel">
+            <div class="mega-col">
+              <span class="mega-head">Company</span>
+              <a href="vission.html"><i class="fas fa-eye"></i> Vision &amp; Mission</a>
+              <a href="#"><i class="fas fa-chart-pie"></i> Financials</a>
+              <a href="#"><i class="fas fa-users"></i> Board &amp; Management</a>
+              <a href="#"><i class="fas fa-sitemap"></i> Organogram</a>
+            </div>
+            <div class="mega-col">
+              <span class="mega-head">Governance</span>
+              <a href="#"><i class="fas fa-handshake"></i> Key Commitments</a>
+              <a href="#"><i class="fas fa-scroll"></i> Model Code of Conduct</a>
+              <a href="#"><i class="fas fa-user-tie"></i> Director Responsibilities</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="nav-group has-mega">
+          <button class="nav-btn">Personal <i class="fas fa-angle-down"></i></button>
+          <div class="mega-panel">
+            <div class="mega-col">
+              <span class="mega-head">Accounts</span>
+              <a href="#"><i class="fas fa-piggy-bank"></i> Saving Funds Account</a>
+              <a href="#"><i class="fas fa-sync"></i> Recurring Account</a>
+              <a href="#"><i class="fas fa-lock"></i> Fixed Deposit Account</a>
+              <a href="#"><i class="fas fa-university"></i> Current Account</a>
+            </div>
+            <div class="mega-col">
+              <span class="mega-head">Services</span>
+              <a href="#"><i class="fas fa-paper-plane"></i> Remit Bhutan</a>
+              <a href="#"><i class="fas fa-percentage"></i> Interest Rates &amp; Charges</a>
+              <a href="#"><i class="fas fa-calculator"></i> Loan Schemes</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="nav-group has-mega">
+          <button class="nav-btn">Business <i class="fas fa-angle-down"></i></button>
+          <div class="mega-panel">
+            <div class="mega-col">
+              <span class="mega-head">Sectors</span>
+              <a href="#"><i class="fas fa-store"></i> SME Sector</a>
+              <a href="#"><i class="fas fa-exchange-alt"></i> Traders Finance</a>
+            </div>
+            <div class="mega-col">
+              <span class="mega-head">Corporate</span>
+              <a href="#"><i class="fas fa-building"></i> Loan Against Lease Rentals</a>
+              <a href="#"><i class="fas fa-file-invoice-dollar"></i> Unclaimed Dividend</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="nav-group has-mega">
+          <button class="nav-btn">Remittance <i class="fas fa-angle-down"></i></button>
+          <div class="mega-panel">
+            <div class="mega-col">
+              <span class="mega-head">Transfer Services</span>
+              <a href="#"><i class="fas fa-globe-asia"></i> Inward International (FCY)</a>
+              <a href="#"><i class="fas fa-rupee-sign"></i> Inward from India</a>
+              <a href="#"><i class="fas fa-arrow-right"></i> Remittance to PNB India</a>
+              <a href="#"><i class="fas fa-bolt"></i> BIRT – Inter-Bank Real Time</a>
+            </div>
+          </div>
+        </div>
+
+        <a class="nav-link" href="#rates">Forex Rates</a>
+        <a class="nav-link" href="#contact">Contact</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="https://www.onlinepnbbhutan.in/drukpnbret/AuthenticationController?__START_TRAN_FLAG__=Y" target="_blank" class="btn-ibanking">
+          <i class="fas fa-laptop"></i> Internet Banking
+        </a>
+        <button class="btn-account" onclick="openModal()">Open Account</button>
+        <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+<div class="vision-layout">
+    <!-- Left side: Vision & Mission -->
+    <div class="vision-mission">
+        <h1>Vision & Mission</h1>
+        <div class="vision-section">
+            <div class="section-label">Vision:</div>
+            <p class="section-content">To Position Druk PNB Bank Ltd. as the “Most Preferred Bank” for customers, the “Best Place to Work In” for employees, and a “Benchmark of Excellence” for the Industry.</p>
+        </div>
+        <div class="mission-section">
+            <div class="section-label">Mission:</div>
+            <p class="section-content">Providing personalized, efficient, quick and competitively priced financial services and implementing sound policies in order to benefit clients, staff, investors and the community.</p>
+        </div>
+    </div>
+
+    <!-- Right side: Quick Links -->
+    <div class="quick-links">
+        <h2>Personal Banking</h2>
+        <div class="links-container">
+            <a href="#" class="quick-link">
+                <span>Remit Bhutan  </span>    
+                <span class="quick-link-icon">→</span>
+            </a>
+          <a href="#" class="quick-link"> 
+            <span>  Recurring Account  </span> </a>
+           <a href="#" class="quick-link"> 
+             <span> Loan Schemes </span></a>
+            <a href="#" class="quick-link"> 
+                <span>  Saving Funds Account </span></a>
+            
+        <a href="#" class="quick-link">     
+            <span>  Current Account </span></a>
+            <a href="#" class="quick-link"> <span>  Fixed Deposit Account </span></a>
+            <a href="#" class="quick-link"> <span>  Intrest Rates & Service Charges</span></a>
+
+        </div>
+    </div>
+</div>
+  
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-main">
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <div class="fb-logo">
+              <img src="images/lago.webp" alt="Druk PNB Bank"/>
+              <div>
+                <span>Druk PNB</span>
+                <small>Bank Limited</small>
+              </div>
+            </div>
+            <p>Committed to the financial well-being of every Bhutanese — Your Partner in Growth since 2010. Regulated by the Royal Monetary Authority of Bhutan.</p>
+            <div class="fb-contact">
+              <span><i class="fas fa-phone-alt"></i> Toll Free: 1313</span>
+              <span><i class="fas fa-map-marker-alt"></i> Chang Lam, Thimphu</span>
+            </div>
+          </div>
+          <div class="footer-col">
+            <h5>Personal Banking</h5>
+            <ul>
+              <li><a href="https://drukpnbbank.bt/personal-banking/saving-funds-account/" target="_blank">Saving Funds Account</a></li>
+              <li><a href="https://drukpnbbank.bt/personal-banking/recurring-account/" target="_blank">Recurring Account</a></li>
+              <li><a href="https://drukpnbbank.bt/personal-banking/fixed-deposit-account/" target="_blank">Fixed Deposit Account</a></li>
+              <li><a href="https://drukpnbbank.bt/personal-banking/current-account/" target="_blank">Current Account</a></li>
+              <li><a href="https://drukpnbbank.bt/personal-banking/remit-bhutan/" target="_blank">Remit Bhutan</a></li>
+              <li><a href="https://drukpnbbank.bt/loan-schemes/" target="_blank">Loan Schemes</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h5>Business &amp; Corporate</h5>
+            <ul>
+              <li><a href="https://drukpnbbank.bt/business-sector/sme-sector/" target="_blank">SME Sector</a></li>
+              <li><a href="https://drukpnbbank.bt/business-sector/traders-finance/" target="_blank">Traders Finance</a></li>
+              <li><a href="https://drukpnbbank.bt/loan-schemes/corporate-banking/loan-against-future-lease-rentals/" target="_blank">Loan Against Lease Rentals</a></li>
+              <li><a href="https://drukpnbbank.bt/unclaimed-dividend/" target="_blank">Unclaimed Dividend</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h5>Quick Links</h5>
+            <ul>
+              <li><a href="https://drukpnbbank.bt/about-us/vision-mission/" target="_blank">Vision & Mission</a></li>
+              <li><a href="https://drukpnbbank.bt/financials/" target="_blank">Financials</a></li>
+              <li><a href="https://drukpnbbank.bt/about-us/bod-management-team/" target="_blank">Board & Management</a></li>
+              <li><a href="https://drukpnbbank.bt/category/career/" target="_blank">Career Opportunities</a></li>
+              <li><a href="https://www.onlinepnbbhutan.in/drukpnbret/AuthenticationController?__START_TRAN_FLAG__=Y" target="_blank">Internet Banking</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">
+        <p>&copy; 2026 Druk PNB Bank Limited. All rights reserved. Regulated by the <strong>Royal Monetary Authority of Bhutan</strong>.</p>
+        <div class="fb-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Use</a>
+          <a href="#">Disclaimer</a>
+          <a href="https://drukpnbbank.bt/atm-branch-location/" target="_blank">Branch Locator</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- OPEN ACCOUNT MODAL -->
+  <div class="modal-bg" id="modalBg">
+    <div class="modal-box" id="modalBox">
+      <button class="modal-x" onclick="closeModal()"><i class="fas fa-times"></i></button>
+      <div class="modal-logo">
+        <img src="lago.webp" alt="Druk PNB Bank"/>
+        <div>
+          <span>Druk PNB Bank</span>
+          <small>Open Account Online</small>
+        </div>
+      </div>
+      <h2>Open Your Account</h2>
+      <p>Fill in your details to get started. Our team will reach you within 24 hours.</p>
+      <form id="accountForm" novalidate>
+        <div class="frow">
+          <div class="fgroup">
+            <label>First Name</label>
+            <input type="text" placeholder="Tshering" required/>
+          </div>
+          <div class="fgroup">
+            <label>Last Name</label>
+            <input type="text" placeholder="Wangmo" required/>
+          </div>
+        </div>
+        <div class="fgroup">
+          <label>CID / Citizenship Number</label>
+          <input type="text" placeholder="10101000XXXXX" required/>
+        </div>
+        <div class="fgroup">
+          <label>Phone Number</label>
+          <input type="tel" placeholder="+975 17 xxxxxx" required/>
+        </div>
+        <div class="fgroup">
+          <label>Account Type</label>
+          <select>
+            <option>Saving Funds Account</option>
+            <option>Current Account</option>
+            <option>Fixed Deposit Account</option>
+            <option>Recurring Account</option>
+          </select>
+        </div>
+        <button type="submit" class="cta-primary full">Submit Application <i class="fas fa-arrow-right"></i></button>
+      </form>
+      <p class="modal-note">Already have an account? <a href="https://www.onlinepnbbhutan.in/drukpnbret/AuthenticationController?__START_TRAN_FLAG__=Y" target="_blank">Login to Internet Banking</a></p>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast-msg" id="toast"></div>
+
+  <!-- BACK TO TOP -->
+  <button class="btt" id="btt" aria-label="Back to top"><i class="fas fa-chevron-up"></i></button>
+
+  <script src="script.js"></script>
+  <script>
+    const quickLinks = document.querySelectorAll('.quick-link');
+
+    quickLinks.forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const text = this.querySelector('span').textContent;
+        console.log('Clicked on:', text);
+      });
+
+      link.addEventListener('focus', function() {
+        this.style.outline = '2px solid #f4b860';
+      });
+    });
+  </script>
+</body>
+</html>
